@@ -1,4 +1,5 @@
 import random
+import tkinter as tk
 
 # Constants
 SUITS = ('♡', '◇', '♠', '♣')
@@ -56,30 +57,18 @@ class Money(object):
     def __init__(self, total=1000):
         self.total = total
         self.player_money = 100
-        self.dealer_money = self.total-100
         self.bet = 0
         
     def player_win(self):
         self.player_money += self.bet
-        self.dealer_money -= self.bet
     
     def player_lose(self):
         self.player_money -= self.bet
-        self.dealer_money += self.bet
         
 
 def take_bet(money):
+    self.bet = int(entry_bet.get())
 
-    while True:
-        try:
-            money.bet = int(input(f'\nいくら賭けますか？\n最大で{money.player_money}賭けることができます。\n'))
-        except ValueError:
-            print('\n半角数字で入力してください。')
-        else:
-            if money.bet > money.player_money:
-                print(f"\nお金が足りません。")
-            else:
-                break
 
 def hit(deck, hand):
     hand.add_card(deck.deal())
@@ -133,16 +122,29 @@ def push(player, dealer):
 
 def main():
     player_turn = True
-    count_game = 0
-    count_win = 0
-    count_tie = 0
 
-    money = Money()  
-    print(f'ブラックジャックです。\n\
+    money = Money()
+
+    window = tk.Tk()
+
+    def bet_part():
+        label.configure(text = "You have")
+        label2 = tk.Label(window, text = "Bet your money.")
+        label2.grid(row = 1, column = 0)
+        label3 = tk.Label(window, text = self.player_money)
+        label3.grid(row = 0, column = 1)
+        button.configure(text = "bet", command = take_bet)
+        button.grid(row = 2, column = 0)
+        entry = tk.Entry(window)
+        entry.grid(row = 0, column = 2)
+
+    label = tk.Label(window, text = f'ブラックジャックです。\n\
     プレーヤーは{money.player_money}の金額を持っています。\n\
-    ディーラーは{money.dealer_money}の金額を持っています。\n\
     ディーラは17以上になるまで必ずカードを引きます。 \n\
     エースは１か１１としてカウントできます。')
+    label.grid(row = 0, column = 0)
+    button = tk.Button(window, text = "start", command = bet_part)
+    button.grid(row = 1, column = 0)
 
     while True:
         count_game += 1
